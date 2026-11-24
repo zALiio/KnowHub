@@ -1,0 +1,104 @@
+CREATE DATABASE IF NOT EXISTS knowhub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE knowhub;
+
+SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE IF EXISTS bookmarks, answer_votes, question_votes, question_tags, tags, answers, questions, categories, users;
+SET FOREIGN_KEY_CHECKS=1;
+
+CREATE TABLE users (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(100) NOT NULL,
+  username VARCHAR(30) NOT NULL UNIQUE,
+  email VARCHAR(190) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  bio VARCHAR(500) NOT NULL DEFAULT '',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_users_name (full_name)
+) ENGINE=InnoDB;
+
+CREATE TABLE categories (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(80) NOT NULL UNIQUE,
+  slug VARCHAR(100) NOT NULL UNIQUE,
+  description VARCHAR(240) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE questions (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT UNSIGNED NOT NULL,
+  category_id BIGINT UNSIGNED NOT NULL,
+  title VARCHAR(180) NOT NULL,
+  body TEXT NOT NULL,
+  accepted_answer_id BIGINT UNSIGNED NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_questions_user FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_questions_category FOREIGN KEY(category_id) REFERENCES categories(id) ON DELETE RESTRICT,
+  INDEX idx_questions_feed (created_at, id),
+  INDEX idx_questions_category (category_id, created_at),
+  FULLTEXT INDEX ft_questions (title, body)
+) ENGINE=InnoDB;
+
+CREATE TABLE answers (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  question_id BIGINT UNSIGNED NOT NULL,
+  user_id BIGINT UNSIGNED NOT NULL,
+  body TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_answers_question FOREIGN KEY(question_id) REFERENCES questions(id) ON DELETE CASCADE,
+  CONSTRAINT fk_answers_user FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_answers_question (question_id, created_at),
+  INDEX idx_answers_user (user_id, created_at)
+) ENGINE=InnoDB;
+
+ALTER TABLE questions ADD CONSTRAINT fk_questions_accepted_answer FOREIGN KEY(accepted_answer_id) REFERENCES answers(id) ON DELETE SET NULL;
+
+CREATE TABLE tags (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(30) NOT NULL UNIQUE,
+  slug VARCHAR(50) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+
+CREATE TABLE question_tags (
+  question_id BIGINT UNSIGNED NOT NULL,
+  tag_id BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY(question_id, tag_id),
+  CONSTRAINT fk_qt_question FOREIGN KEY(question_id) REFERENCES questions(id) ON DELETE CASCADE,
+  CONSTRAINT fk_qt_tag FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE question_votes (
+  question_id BIGINT UNSIGNED NOT NULL,
+  user_id BIGINT UNSIGNED NOT NULL,
+  vote_value TINYINT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY(question_id, user_id),
+  CONSTRAINT chk_question_vote CHECK(vote_value IN (-1,1)),
+  CONSTRAINT fk_qv_question FOREIGN KEY(question_id) REFERENCES questions(id) ON DELETE CASCADE,
+  CONSTRAINT fk_qv_user FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE answer_votes (
+  answer_id BIGINT UNSIGNED NOT NULL,
+  user_id BIGINT UNSIGNED NOT NULL,
+  vote_value TINYINT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY(answer_id, user_id),
+  CONSTRAINT chk_answer_vote CHECK(vote_value IN (-1,1)),
+  CONSTRAINT fk_av_answer FOREIGN KEY(answer_id) REFERENCES answers(id) ON DELETE CASCADE,
+  CONSTRAINT fk_av_user FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE bookmarks (
+  user_id BIGINT UNSIGNED NOT NULL,
+  question_id BIGINT UNSIGNED NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(user_id, question_id),
+  CONSTRAINT fk_bookmarks_user FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_bookmarks_question FOREIGN KEY(question_id) REFERENCES questions(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
