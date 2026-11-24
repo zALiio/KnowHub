@@ -1,6 +1,60 @@
-<section class="hero-row"><div><p class="eyebrow"><span class="eyebrow-dot"></span> THE STUDENT KNOWLEDGE COMMUNITY</p><h1>Good questions build<br><span>great understanding.</span></h1><p class="hero-copy">A space for curious CS and AI students to learn from each other, one thoughtful answer at a time.</p><div class="hero-actions"><a class="button button-primary" href="<?= e(url('ask')) ?>">Ask your first question <span>↗</span></a><a class="text-link" href="<?= e(url('categories')) ?>">Explore topics <span>→</span></a></div></div><div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-bubble bubble-main">{ }</div><div class="hero-bubble bubble-small bubble-ai">AI</div><div class="hero-bubble bubble-small bubble-py">Py</div><div class="hero-bubble bubble-small bubble-db">⌘</div><div class="float-card"><span class="float-icon">✦</span><span><b>Curiosity, shared.</b><small>Better answers start here</small></span></div></div></section>
-<section class="content-grid"><div class="feed-column"><div class="section-heading feed-heading"><div><p class="eyebrow">COMMUNITY FEED</p><h2>Questions worth exploring</h2></div><a class="button button-outline small-screen-hide" href="<?= e(url('ask')) ?>">＋ Ask question</a></div>
-<div class="feed-toolbar"><div class="feed-tabs"><a class="<?= $sort==='newest'?'selected':'' ?>" href="<?= e(url('home',['sort'=>'newest'])) ?>">Latest</a><a class="<?= $sort==='popular'?'selected':'' ?>" href="<?= e(url('home',['sort'=>'popular'])) ?>">Popular</a><a class="<?= $sort==='answered'?'selected':'' ?>" href="<?= e(url('home',['sort'=>'answered'])) ?>">Most answered</a></div><a class="filter-link" href="<?= e(url('categories')) ?>">All topics <span>⌄</span></a></div>
-<?php if($questions): foreach($questions as $q) include __DIR__.'/../includes/question_card.php'; else: ?><div class="empty-state"><span class="empty-icon">✦</span><h3>The feed is ready for its first question</h3><p>Start a conversation and help your community learn.</p><a class="button button-primary" href="<?= e(url('ask')) ?>">Ask a question</a></div><?php endif; ?>
-<?php if($total>$perPage): ?><nav class="pagination" aria-label="Feed pages"><?php if($pageNum>1): ?><a href="<?= e(url('home',['sort'=>$sort,'p'=>$pageNum-1])) ?>">← Newer</a><?php endif; ?><span>Page <?= $pageNum ?> of <?= (int)ceil($total/$perPage) ?></span><?php if($pageNum<(int)ceil($total/$perPage)): ?><a href="<?= e(url('home',['sort'=>$sort,'p'=>$pageNum+1])) ?>">Older →</a><?php endif; ?></nav><?php endif; ?></div>
-<aside class="sidebar"><div class="side-card welcome-card"><div class="welcome-icon">✳</div><p class="eyebrow">A BETTER WAY TO LEARN</p><h3>Learn out loud.</h3><p>Ask what you’re curious about. Share what you’ve figured out. Your next “aha” might be one conversation away.</p><a class="text-link" href="<?= e(url('categories')) ?>">Find your topic <span>→</span></a></div><div class="side-card"><div class="side-title"><h3>Explore topics</h3><a href="<?= e(url('categories')) ?>">See all</a></div><div class="topic-list"><?php foreach(array_slice($categories,0,6) as $c): ?><a class="topic-row" href="<?= e(url('category',['slug'=>$c['slug']])) ?>"><span class="topic-glyph"><?= e(mb_strtoupper(mb_substr($c['name'],0,1))) ?></span><span><?= e($c['name']) ?></span><small><?= (int)$c['question_count'] ?></small></a><?php endforeach; ?></div></div><div class="community-note"><span>✧</span><p><b>Made for students.</b> A welcoming space to ask, explain, and grow together.</p></div></aside></section>
+<section class="hero-row"><div><p class="eyebrow"><span class="eyebrow-dot"></span> THE STUDENT KNOWLEDGE COMMUNITY</p><h1>Good questions build<br><span>great understanding.</span></h1><p class="hero-copy">A space for curious CS and AI students to learn from each other, one thoughtful answer at a time.</p><div class="hero-actions"><a class="button button-primary" href="<?= e(
+    url("ask"),
+) ?>">Ask your first question <span>↗</span></a><a class="text-link" href="<?= e(
+    url("categories"),
+) ?>">Explore topics <span>→</span></a></div></div><div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-bubble bubble-main">{ }</div><div class="hero-bubble bubble-small bubble-ai">AI</div><div class="hero-bubble bubble-small bubble-py">Py</div><div class="hero-bubble bubble-small bubble-db">⌘</div><div class="float-card"><span class="float-icon">✦</span><span><b>Curiosity, shared.</b><small>Better answers start here</small></span></div></div></section>
+<section class="content-grid"><div class="feed-column"><div class="section-heading feed-heading"><div><p class="eyebrow">COMMUNITY FEED</p><h2>Questions worth exploring</h2></div><a class="button button-outline small-screen-hide" href="<?= e(
+    url("ask"),
+) ?>">＋ Ask question</a></div>
+<div class="feed-toolbar"><div class="feed-tabs"><a class="<?= $sort ===
+"newest"
+    ? "selected"
+    : "" ?>" href="<?= e(
+    url("home", ["sort" => "newest"]),
+) ?>">Latest</a><a class="<?= $sort === "popular"
+    ? "selected"
+    : "" ?>" href="<?= e(
+    url("home", ["sort" => "popular"]),
+) ?>">Popular</a><a class="<?= $sort === "answered"
+    ? "selected"
+    : "" ?>" href="<?= e(
+    url("home", ["sort" => "answered"]),
+) ?>">Most answered</a></div><a class="filter-link" href="<?= e(
+    url("categories"),
+) ?>">All topics <span>⌄</span></a></div>
+<?php if ($questions):
+    foreach ($questions as $q) {
+        include __DIR__ . "/../includes/question_card.php";
+    }
+else:
+     ?><div class="empty-state"><span class="empty-icon">✦</span><h3>The feed is ready for its first question</h3><p>Start a conversation and help your community learn.</p><a class="button button-primary" href="<?= e(
+    url("ask"),
+) ?>">Ask a question</a></div><?php
+endif; ?>
+<?php if (
+    $total > $perPage
+): ?><nav class="pagination" aria-label="Feed pages"><?php if (
+    $pageNum > 1
+): ?><a href="<?= e(
+    url("home", ["sort" => $sort, "p" => $pageNum - 1]),
+) ?>">← Newer</a><?php endif; ?><span>Page <?= $pageNum ?> of <?= (int) ceil(
+     $total / $perPage,
+ ) ?></span><?php if (
+    $pageNum < (int) ceil($total / $perPage)
+): ?><a href="<?= e(
+    url("home", ["sort" => $sort, "p" => $pageNum + 1]),
+) ?>">Older →</a><?php endif; ?></nav><?php endif; ?></div>
+<aside class="sidebar"><div class="side-card welcome-card"><div class="welcome-icon">✳</div><p class="eyebrow">A BETTER WAY TO LEARN</p><h3>Learn out loud.</h3><p>Ask what you’re curious about. Share what you’ve figured out. Your next “aha” might be one conversation away.</p><a class="text-link" href="<?= e(
+    url("categories"),
+) ?>">Find your topic <span>→</span></a></div><div class="side-card"><div class="side-title"><h3>Explore topics</h3><a href="<?= e(
+    url("categories"),
+) ?>">See all</a></div><div class="topic-list"><?php foreach (
+    array_slice($categories, 0, 6)
+    as $c
+): ?><a class="topic-row" href="<?= e(
+    url("category", ["slug" => $c["slug"]]),
+) ?>"><span class="topic-glyph"><?= e(
+    mb_strtoupper(mb_substr($c["name"], 0, 1)),
+) ?></span><span><?= e($c["name"]) ?></span><small><?= (int) $c[
+    "question_count"
+] ?></small></a><?php endforeach; ?></div></div><div class="community-note"><span>✧</span><p><b>Made for students.</b> A welcoming space to ask, explain, and grow together.</p></div></aside></section>

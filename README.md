@@ -1,6 +1,6 @@
 # KnowHub
 
-![KnowHub knowledge-sharing interface](assets/images/knowhub-cover.svg)
+![KnowHub knowledge-sharing community](assets/images/knowhub-social.png)
 
 [![PHP syntax](https://github.com/zALiio/KnowHub/actions/workflows/php-lint.yml/badge.svg)](https://github.com/zALiio/KnowHub/actions/workflows/php-lint.yml)
 
@@ -90,7 +90,7 @@ KnowHub/
 ├── .github/workflows/         PHP syntax check on push and pull request
 ├── actions/                   State-changing form handlers
 ├── assets/css/style.css       Responsive design system and components
-├── assets/images/             Project artwork
+├── assets/images/             README banner and repository preview artwork
 ├── assets/js/app.js           Small browser interactions
 ├── config/                    Database configuration and PDO connection
 ├── database/                  Schema and sample data

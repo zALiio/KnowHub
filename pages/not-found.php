@@ -1,1 +1,3 @@
-<section class="empty-state"><span class="empty-icon">✳</span><h1>Let’s find your way back</h1><p>This page isn’t available, but there’s plenty to explore in the community.</p><a class="button button-primary" href="<?= e(url()) ?>">Go to the feed</a></section>
+<section class="empty-state"><span class="empty-icon">✳</span><h1>Let’s find your way back</h1><p>This page isn’t available, but there’s plenty to explore in the community.</p><a class="button button-primary" href="<?= e(
+    url(),
+) ?>">Go to the feed</a></section>
