@@ -1,5 +1,9 @@
 # KnowHub
 
+![KnowHub knowledge-sharing interface](assets/images/knowhub-cover.svg)
+
+[![PHP syntax](https://github.com/zALiio/KnowHub/actions/workflows/php-lint.yml/badge.svg)](https://github.com/zALiio/KnowHub/actions/workflows/php-lint.yml)
+
 KnowHub is a student knowledge-sharing platform for computer science and AI. It is a college-scale, multi-page application built with HTML, CSS, vanilla JavaScript, Core PHP, PDO, and MySQL.
 
 ## Features
@@ -83,13 +87,16 @@ This is an educational local project, not a security certification. Keep Apache'
 
 ```text
 KnowHub/
+├── .github/workflows/         PHP syntax check on push and pull request
+├── actions/                   State-changing form handlers
 ├── assets/css/style.css       Responsive design system and components
+├── assets/images/             Project artwork
 ├── assets/js/app.js           Small browser interactions
 ├── config/                    Database configuration and PDO connection
 ├── database/                  Schema and sample data
 ├── includes/                  Bootstrap, helpers, shared layout, question card
 ├── pages/                     Page templates
-├── index.php                  Routes, database reads, and POST actions
+├── index.php                  Routes and page data
 └── README.md
 ```
 
@@ -99,6 +106,6 @@ For five students, assign: (1) UI and responsive CSS; (2) authentication and pro
 
 ## Verification and current limits
 
-The project files and SQL have been reviewed for consistency, and the environment-specific setup page, PDO settings, session/CSRF flow, vote constraints, and reputation calculation are included. PHP, MySQL, and XAMPP were not available in the current workspace, so the application could not be executed against a live PHP/MySQL server here. Before presenting, import the schema and seed data locally and walk through registration, question/answer ownership, voting changes/removals, accepted answers, bookmarks, search, and mobile layout.
+GitHub Actions runs `php -l` against every PHP file on pushes and pull requests. This checks PHP syntax; it does not exercise database queries or application flows. PHP, MySQL, and XAMPP were not available in the development workspace, so the application has not yet been verified against a live PHP/MySQL server here. Before presenting, import the schema and seed data locally and walk through registration, question/answer ownership, voting changes/removals, accepted answers, bookmarks, search, and mobile layout.
 
 Current MVP limits: the interface is English-first; no avatar uploads, notifications, admin moderation, or social sign-in. The feed paginates; topic and search results currently show their matching records without separate pagination controls. Font loading can use Google Fonts when online, with local system font fallbacks available.
